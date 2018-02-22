@@ -1,0 +1,87 @@
+<% include header %> 
+<!-- Header -->
+	<section id="showcase-common">
+      <div class="container">
+        <h1>Contact Me</h1> 
+      </div>
+    </section> 
+
+    
+      <div class="container min-height">
+          <br />
+          <form id = "form">
+            
+          <div class="row">
+            <div class="col-md-6"> <br /> <br />
+                <div class="form-group"> 
+                 
+                  <input type="text" name="name" id = "name" class="form-control" placeholder="Enter Your Name">
+                </div> 
+
+                <div class="form-group"> 
+                   
+                  <input type="text" name="name" id = "email" class="form-control" placeholder="Enter your Email">
+                </div> 
+
+                <div class="form-group"> 
+                  <textarea class="form-control" id = "message" placeholder="Enter your message" style="resize:none;"></textarea> 
+                </div> 
+
+                <input type = "submit" value = "Send Message" id = "send" class="btn btn-primary btn-block" />
+            </div> 
+
+            <div class="col-md-6"> 
+              <br /><br />
+              <h3>Contact Information</h3> 
+              <b>Email Address: </b> mileshero777@gmail.com <br /><br />
+               <b>Phone: </b> 7059707177 <br /><br />
+               <b>Mobile: </b> 7059707177 <br /><br />
+
+            </div>
+          </div>
+
+          </form>
+      </div>
+<!-- footer  --> 
+<script>
+				$(document).ready(function(){ 
+					$('#form').submit(function(e){ 
+						e.preventDefault(); 
+						var name = $.trim( $('#name').val() );
+						var email = $.trim( $('#email').val() );
+						var message = $.trim( $('#message').val() );
+					    var pattern =/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; 
+						if(name == "" || email == "" || message == "") {
+							alert("All fields are required in the contact form.");
+						}
+						else if(!pattern.test(email)) {
+							alert("Email address is invalid.");
+						} 
+						else {
+							var data = {};
+							data.name = name;
+							data.email = email;
+							data.message = message;
+							$('#send').attr('value', 'Sending...');
+							$('#send').attr('disabled', 'disabled'); 
+							$.ajax({
+								method: 'POST',
+								url : 'http://localhost:3000/email',
+								data: JSON.stringify(data),
+								contentType: 'application/json',
+								success: function(data){   
+									if(data.error == false) {
+										$('#send').attr('value', 'Send');
+										$('#send').removeAttr('disabled');
+										$('#name').val("");
+										$('#email').val("");
+										$('#message').val("");
+										alert("Message has been send successfully.");
+									}
+								} 
+							});
+						}
+					});
+				});
+			</script>
+<%  include footer %> 
